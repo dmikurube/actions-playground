@@ -26,4 +26,4 @@ jobs:
     - name: Install mysql-client
       run: sudo apt-get install -y mysql-client
     - name:
-      run: mysql --host localhost --port 3306 -umysql -ppassword -e "SHOW DATABASES;"
+      run: mysql -h localhost --port 3306 -umysql -ppassword -e "SHOW DATABASES;"
