@@ -16,12 +16,8 @@ jobs:
         ports:
         - "3306:3306"
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_USER: mysql
-          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test
     steps:
-    - uses: actions/checkout@v1
-    - name: Install mysql-client
-      run: sudo apt-get install -y mysql-client
-    - name:
-      run: mysql -h localhost --port 3306 -umysql -ppassword -e "SHOW DATABASES;"
+      - uses: actions/checkout@v1
+      - run: mysql -h 127.0.0.1 --port 3306 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS test;'
