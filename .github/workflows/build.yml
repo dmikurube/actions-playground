@@ -21,8 +21,6 @@ jobs:
           MYSQL_PASSWORD: password
     steps:
     - uses: actions/checkout@v1
-    - name: Start MySQL
-      run: sudo /etc/init.d/mysql start
     - name: Install mysql-client
       run: sudo apt-get install -y mysql-client
     - name:
