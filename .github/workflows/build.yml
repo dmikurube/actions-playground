@@ -36,6 +36,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Connect
-      run: psql -h 127.0.0.1 -U postgres -d postgres
+      run: psql -h 127.0.0.1 -U postgres -d postgres -c "\l"
       env:
         PGPASSWORD: postgres
