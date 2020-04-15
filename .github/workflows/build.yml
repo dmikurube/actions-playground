@@ -1,0 +1,9 @@
+name: Build and test
+on: push
+jobs:
+  sqlserver:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Start Docker for mssql-server
+      run: docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=somepassword' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
