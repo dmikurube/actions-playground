@@ -21,4 +21,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Connect
-      run: mysql -h localhost --port 3306 -uroot -ppassword -e "SHOW DATABASES;"
+      run: mysql -h 127.0.0.1 --port 3306 -uroot -ppassword -e "SHOW DATABASES;"
