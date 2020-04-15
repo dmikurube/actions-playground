@@ -14,7 +14,9 @@ jobs:
         image: mysql:5.7
         options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
         env:
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: password
     steps:
     - uses: actions/checkout@v1
     - name: Start MySQL
@@ -22,4 +24,4 @@ jobs:
     - name: Install mysql-client
       run: sudo apt-get install -y mysql-client
     - name:
-      run: mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "SHOW DATABASES"
+      run: mysql --host 127.0.0.1 --port 3306 -umysql -ppassword -e "SHOW DATABASES"
