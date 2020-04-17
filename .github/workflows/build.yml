@@ -35,14 +35,6 @@ jobs:
       run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
     - name: Install ksh to run installDSDriver
       run: sudo apt-get install ksh
-    - name: Show ip (1)
-      run: ip -f inet -o addr show eth0
-    - name: Show ip (2)
-      run: ip addr show eth0
-    - name: Show its own IP address (1)
-      run: ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/  -f 1
-    - name: Show its own IP address (2)
-      run: ip addr show eth0 | grep -o 'inet [0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+' | grep -o [0-9].*
     - name: Make working directory
       run: mkdir "${{ env.workspace }}/clpplus"
     - name: Download clpplus
@@ -63,7 +55,7 @@ jobs:
       run: ls -R
       working-directory: "${{ env.workspace }}/clpplus"
     - name: Run clpplus
-      run: "${{ env.workspace }}/clpplus/dsdriver/bin/clpplus" -verbose db2inst1/password@127.0.0.1:50000/testdb "GET DBM CFG"
+      run: "${{ env.workspace }}/clpplus/dsdriver/bin/clpplus" -verbose "db2inst1/password@127.0.0.1:50000/testdb" "GET DBM CFG"
   mysql:
     runs-on: ubuntu-latest
     services:
