@@ -48,6 +48,15 @@ jobs:
     - name: Run installDSDriver
       run: ./installDSDriver
       working-directory: "${{ env.workspace }}/clpplus/dsdriver"
+    - name: Dump installDSDriver.log
+      run: cat installDSDriver.log
+      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
+    - name: List bin files
+      run: ls bin/
+      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
+    - name: Head clpplus
+      run: head -n 20 "bin/clpplus"
+      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
   mysql:
     runs-on: ubuntu-latest
     services:
