@@ -41,7 +41,11 @@ jobs:
     - name: Extract clpplus
       run: tar zxvf "${{ env.workspace }}/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz" -C "${{ env.workspace }}/clpplus"
     - name: Make installDSDriver runnable
-      run: chmod +x "${{ env.workspace }}/clpplus/dsdriver/installDSDriver"
+      run: |
+        sed "s|/bin/ksh|/bin/mksh|" < installDSDriver > installDSDriver-new
+        mv installDSDriver-new installDSDriver
+        chmod +x installDSDriver
+      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
     - name: Run installDSDriver
       run: ./installDSDriver
       working-directory: "${{ env.workspace }}/clpplus/dsdriver"
