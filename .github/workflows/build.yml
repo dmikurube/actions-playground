@@ -9,28 +9,28 @@ jobs:
       run: docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=somepassword' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
   db2:  # https://hub.docker.com/r/ibmcom/db2
     runs-on: ubuntu-latest
-    #services:
-    #  db2:
-    #    # docker run -itd --name db2container -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=password -e DBNAME=testdb ibmcom/db2:11.5.0.0a
-    #    image: docker://ibmcom/db2:11.5.0.0a
-    #    options: --name "db2container" --health-cmd "su - db2inst1 -c \"db2 GET DBM CFG\"" --health-interval 20s --health-timeout 30s --health-retries 128
-    #    ports:
-    #    - "50000:50000"
-    #    - "55000:55000"
-    #    - "60006:60006"
-    #    - "60007:60007"
-    #    env:
-    #      LICENSE: accept
-    #      DB2INSTANCE: db2inst1
-    #      DB2INST1_PASSWORD: password
-    #      DBNAME: testdb
-    #      SAMPLEDB: true
+    services:
+      db2:
+        # docker run -itd --name db2container -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=password -e DBNAME=testdb ibmcom/db2:11.5.0.0a
+        image: docker://ibmcom/db2:11.5.0.0a
+        options: --name "db2container" --health-cmd "su - db2inst1 -c \"db2 GET DBM CFG\"" --health-interval 20s --health-timeout 30s --health-retries 128
+        ports:
+        - "50000:50000"
+        - "55000:55000"
+        - "60006:60006"
+        - "60007:60007"
+        env:
+          LICENSE: accept
+          DB2INSTANCE: db2inst1
+          DB2INST1_PASSWORD: password
+          DBNAME: testdb
+          SAMPLEDB: true
     steps:
     - uses: actions/checkout@v1
     - name: List Docker containers
       run: docker ps -a
-    #- name: Show DB2 configs
-    #  run: docker exec db2container su - db2inst1 -c "db2 \"GET DBM CFG\""
+    - name: Show DB2 configs
+      run: docker exec db2container su - db2inst1 -c "db2 \"GET DBM CFG\""
     - name: Set env
       run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
     - name: Install ksh to run installDSDriver
@@ -49,7 +49,7 @@ jobs:
       # https://github.com/rickdesantis/docker-files/tree/e3bbc10080be9e31635223c23091526bc5d9eff6/clpplus
       run: curl "https://raw.githubusercontent.com/rickdesantis/docker-files/master/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz" -o "${{ env.workspace }}/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz"
     - name: Extract clpplus
-      run: tar zxvf "${{ env.workspace }}/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz" -C "${{ env.workspace }}/clpplus"
+      run: tar zxf "${{ env.workspace }}/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz" -C "${{ env.workspace }}/clpplus"
     - name: Make installDSDriver runnable
       run: chmod +x installDSDriver
       working-directory: "${{ env.workspace }}/clpplus/dsdriver"
@@ -59,12 +59,11 @@ jobs:
     - name: Dump installDSDriver.log
       run: cat installDSDriver.log
       working-directory: "${{ env.workspace }}/clpplus/dsdriver"
-    - name: List bin files
-      run: ls bin/
-      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
-    - name: Head clpplus
-      run: head -n 100 "bin/clpplus"
-      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
+    - name: List files
+      run: ls -R
+      working-directory: "${{ env.workspace }}/clpplus"
+    - name: Run clpplus
+      run: "${{ env.workspace }}/clpplus/dsdriver/bin/clpplus" -verbose db2inst1/password@127.0.0.1:50000/testdb "GET DBM CFG"
   mysql:
     runs-on: ubuntu-latest
     services:
