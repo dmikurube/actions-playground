@@ -9,28 +9,28 @@ jobs:
       run: docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=somepassword' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
   db2:  # https://hub.docker.com/r/ibmcom/db2
     runs-on: ubuntu-latest
-    services:
-      db2:
-        # docker run -itd --name db2container -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=password -e DBNAME=testdb ibmcom/db2:11.5.0.0a
-        image: docker://ibmcom/db2:11.5.0.0a
-        options: --name "db2container" --health-cmd "su - db2inst1 -c \"db2 GET DBM CFG\"" --health-interval 20s --health-timeout 30s --health-retries 128
-        ports:
-        - "50000:50000"
-        - "55000:55000"
-        - "60006:60006"
-        - "60007:60007"
-        env:
-          LICENSE: accept
-          DB2INSTANCE: db2inst1
-          DB2INST1_PASSWORD: password
-          DBNAME: testdb
-          SAMPLEDB: true
+    #services:
+    #  db2:
+    #    # docker run -itd --name db2container -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=password -e DBNAME=testdb ibmcom/db2:11.5.0.0a
+    #    image: docker://ibmcom/db2:11.5.0.0a
+    #    options: --name "db2container" --health-cmd "su - db2inst1 -c \"db2 GET DBM CFG\"" --health-interval 20s --health-timeout 30s --health-retries 128
+    #    ports:
+    #    - "50000:50000"
+    #    - "55000:55000"
+    #    - "60006:60006"
+    #    - "60007:60007"
+    #    env:
+    #      LICENSE: accept
+    #      DB2INSTANCE: db2inst1
+    #      DB2INST1_PASSWORD: password
+    #      DBNAME: testdb
+    #      SAMPLEDB: true
     steps:
     - uses: actions/checkout@v1
     - name: List Docker containers
       run: docker ps -a
-    - name: Show DB2 configs
-      run: docker exec db2container su - db2inst1 -c "db2 \"GET DBM CFG\""
+    #- name: Show DB2 configs
+    #  run: docker exec db2container su - db2inst1 -c "db2 \"GET DBM CFG\""
     - name: Set env
       run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
     - name: Make working directory
