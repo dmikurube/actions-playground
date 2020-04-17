@@ -41,7 +41,10 @@ jobs:
     - name: Extract clpplus
       run: tar zxvf "${{ env.workspace }}/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz" -C "${{ env.workspace }}/clpplus"
     - name: Make installDSDriver runnable
-      run: chmod +x "${{ env.workspace }}/installDSDriver"
+      run: chmod +x "${{ env.workspace }}/clpplus/dsdriver/installDSDriver"
+    - name: Run installDSDriver
+      run: ./installDSDriver
+      working-directory: "${{ env.workspace }}/clpplus/dsdriver"
   mysql:
     runs-on: ubuntu-latest
     services:
