@@ -55,7 +55,7 @@ jobs:
       run: ls -R
       working-directory: "${{ env.workspace }}/clpplus"
     - name: Run clpplus
-      run: "${{ env.workspace }}/clpplus/dsdriver/bin/clpplus" -verbose "db2inst1/password@127.0.0.1:50000/testdb" "GET DBM CFG"
+      run: "${{ env.workspace }}/clpplus/dsdriver/bin/clpplus -verbose 'db2inst1/password@127.0.0.1:50000/testdb' 'GET DBM CFG'"
   mysql:
     runs-on: ubuntu-latest
     services:
