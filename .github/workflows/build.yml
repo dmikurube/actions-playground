@@ -33,6 +33,8 @@ jobs:
     #  run: docker exec db2container su - db2inst1 -c "db2 \"GET DBM CFG\""
     - name: Set env
       run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
+    - name: Install ksh to run installDSDriver
+      run: sudo apt-get install ksh
     - name: Make working directory
       run: mkdir "${{ env.workspace }}/clpplus"
     - name: Download clpplus
@@ -41,10 +43,7 @@ jobs:
     - name: Extract clpplus
       run: tar zxvf "${{ env.workspace }}/clpplus/ibm_data_server_driver_package_linuxx64_v10.5.tar.gz" -C "${{ env.workspace }}/clpplus"
     - name: Make installDSDriver runnable
-      run: |
-        sed "s|/bin/ksh|/bin/mksh|" < installDSDriver > installDSDriver-new
-        mv installDSDriver-new installDSDriver
-        chmod +x installDSDriver
+      run: chmod +x installDSDriver
       working-directory: "${{ env.workspace }}/clpplus/dsdriver"
     - name: Run installDSDriver
       run: ./installDSDriver
